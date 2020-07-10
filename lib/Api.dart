@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:youtube/model/Video.dart';
 
-const CHAVE_YOUTUBE_API = "AIzaSyBHJthq16NfW1O4W3hsdvqqrKeGkZsNJS4";
+const CHAVE_YOUTUBE_API = "AIzaSyBLGjzFMmkQUqizxNJXrEOq5KqU4lXmxMc";
 const ID_CANAL = "UCLXl1V6n82Dyg1VhVgSL0nw";
 const URL_BASE = "https://www.googleapis.com/youtube/v3/";
 
@@ -21,9 +23,25 @@ class Api{
     );
 
     if(response.statusCode == 200){
-      print("resultado: " + response.body);
-    }else{
 
+      Map<String, dynamic> dadosJson = json.decode(response.body);
+      List<Video> videos = dadosJson["items"].map<Video>(
+          (map){
+            return Video.fromJson(map);
+          }
+      ).toList();
+
+      for(var video in videos){
+        debugPrint("Fusca: " + video.titulo);
+      }
+
+      /*for(var video in dadosJson["items"]){
+        print("Fusca: " + video.toString());
+      }*/
+
+      //print("resultado: " + response.body);
+    }else{
+      print("Resultado: " + response.statusCode.toString());
     }
 
   }
